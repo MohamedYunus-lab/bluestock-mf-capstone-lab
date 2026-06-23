@@ -4,8 +4,6 @@ import os
 
 processed_path = "data/processed"
 db_path = "bluestock_mf.db"
-
-# Connect to SQLite (creates file if not exists)
 conn = sqlite3.connect(db_path)
 
 for file in os.listdir(processed_path):
@@ -17,4 +15,4 @@ for file in os.listdir(processed_path):
         df.to_sql(table_name, conn, if_exists="replace", index=False)
 
 conn.close()
-print("✅ All tables loaded into bluestock_mf.db")
+print("All tables loaded into bluestock_mf.db")
