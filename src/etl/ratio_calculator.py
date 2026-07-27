@@ -247,13 +247,11 @@ class RatioCalculator:
         
         cursor = self.connection.cursor()
         
-        # Get unique company-year combinations
+        # Get unique company-year combinations - simplified query
         cursor.execute("""
-            SELECT DISTINCT c.company_id, p.year
-            FROM companies c
-            CROSS JOIN profitandloss p
-            WHERE p.company_id = c.company_id
-            ORDER BY c.company_id, p.year
+            SELECT DISTINCT company_id, year
+            FROM profitandloss
+            ORDER BY company_id, year
         """)
         
         rows = cursor.fetchall()
