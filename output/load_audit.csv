@@ -1,0 +1,9 @@
+table,rows_loaded,rows_rejected,status
+sectors,10,82,SUCCESS
+companies,91,0,SUCCESS
+profitandloss,1172,103,SUCCESS
+balancesheet,1306,5,SUCCESS
+cashflow,1186,0,SUCCESS
+stock_prices,5520,0,SUCCESS
+financial_ratios,1184,0,SUCCESS
+peer_groups,56,0,SUCCESS

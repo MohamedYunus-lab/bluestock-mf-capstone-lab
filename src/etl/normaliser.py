@@ -10,7 +10,7 @@ from typing import Union, Optional
 def normalize_year(year: Union[str, int, float]) -> Optional[int]:
     """
     Normalize year values to integer format
-    Handles: strings, integers, floats, FY formats
+    Handles: strings, integers, floats, FY formats, month-year formats
     Returns: integer year or None if invalid
     """
     if year is None or (isinstance(year, float) and year != year):
@@ -23,17 +23,37 @@ def normalize_year(year: Union[str, int, float]) -> Optional[int]:
     
     year_str = year_str.replace(',', '').strip()
     
+    # Handle "Month Year" format (e.g., "Dec 2012", "Mar 2014")
+    month_year_parts = year_str.split()
+    if len(month_year_parts) == 2:
+        try:
+            year_int = int(month_year_parts[1])
+            if 1900 <= year_int <= 2100:
+                return year_int
+        except (ValueError, TypeError):
+            pass
+    
+    # Handle "Mar-13" format
+    if '-' in year_str and len(year_str.split('-')) == 2:
+        parts = year_str.split('-')
+        try:
+            year_int = int(parts[1])
+            if 0 <= year_int <= 99:
+                if year_int < 30:
+                    return 2000 + year_int
+                else:
+                    return 1900 + year_int
+        except (ValueError, TypeError):
+            pass
+    
     if year_str.upper().startswith('FY'):
         year_str = year_str[2:].strip()
     
     if year_str.upper().startswith('Y'):
         year_str = year_str[1:].strip()
     
-    if '-' in year_str:
-        year_str = year_str.split('-')[0].strip()
-    
-    if '/' in year_str:
-        year_str = year_str.split('/')[0].strip()
+    year_str = year_str.split('-')[0].strip() if '-' in year_str else year_str
+    year_str = year_str.split('/')[0].strip() if '/' in year_str else year_str
     
     try:
         year_int = int(year_str)
