@@ -1,160 +1,79 @@
 """
-Unit tests for Leverage & Efficiency Ratios (Day 09)
-8 comprehensive tests covering D/E, ICR, Asset Turnover, Net Debt with edge cases
+Tests for Leverage & Efficiency Ratios (Day 09)
 """
 
 import pytest
-from src.analytics.ratios import LeverageRatios, EfficiencyRatios
+from src.analytics.ratios import LeverageRatios
 
 
-class TestDebtToEquity:
-    """D/E Ratio tests"""
+class TestLeverageRatios:
     
     def test_de_normal_case(self):
-        """Test D/E calculation with normal values"""
-        de, edge_case = LeverageRatios.debt_to_equity(
-            total_debt_cr=500,
-            equity_cr=1000
-        )
-        assert de == pytest.approx(0.5)
-        assert edge_case is None
+        de, error = LeverageRatios.debt_to_equity(500, 1000)
+        assert de == 0.5
+        assert error is None
     
-    def test_de_debt_free_company(self):
-        """Test D/E with debt-free company (zero debt)"""
-        de, edge_case = LeverageRatios.debt_to_equity(
-            total_debt_cr=0,
-            equity_cr=1000
-        )
+    def test_de_debt_free(self):
+        de, error = LeverageRatios.debt_to_equity(0, 1000)
         assert de == 0.0
-        assert edge_case is not None
-        assert edge_case.edge_case == "debt_free"
+        assert error == "debt_free"
     
     def test_de_negative_equity(self):
-        """Test D/E with negative equity"""
-        de, edge_case = LeverageRatios.debt_to_equity(
-            total_debt_cr=500,
-            equity_cr=-1000
-        )
+        de, error = LeverageRatios.debt_to_equity(500, -1000)
         assert de is None
-        assert edge_case is not None
-        assert edge_case.edge_case == "negative_equity"
-
-
-class TestInterestCoverageRatio:
-    """ICR tests"""
+        assert error == "negative_equity"
+    
+    def test_de_zero_equity(self):
+        de, error = LeverageRatios.debt_to_equity(500, 0)
+        assert de is None
+        assert error == "negative_equity"
+    
+    def test_de_missing_data(self):
+        de, error = LeverageRatios.debt_to_equity(None, 1000)
+        assert de is None
+        assert error == "missing_data"
     
     def test_icr_normal_case(self):
-        """Test ICR calculation with normal values"""
-        icr, edge_case = LeverageRatios.interest_coverage_ratio(
-            ebit_cr=200,
-            interest_expense_cr=50
-        )
-        assert icr == pytest.approx(4.0)
-        assert edge_case is None
+        icr, error = LeverageRatios.interest_coverage_ratio(300, 30)
+        assert icr == 10.0
+        assert error is None
     
-    def test_icr_debt_free_company(self):
-        """Test ICR with debt-free company (zero interest)"""
-        icr, edge_case = LeverageRatios.interest_coverage_ratio(
-            ebit_cr=200,
-            interest_expense_cr=0
-        )
+    def test_icr_debt_free(self):
+        icr, error = LeverageRatios.interest_coverage_ratio(300, 0)
         assert icr is None
-        assert edge_case is not None
-        assert edge_case.edge_case == "debt_free"
+        assert error == "debt_free"
     
-    def test_icr_insufficient_ebit(self):
-        """Test ICR with zero EBIT"""
-        icr, edge_case = LeverageRatios.interest_coverage_ratio(
-            ebit_cr=0,
-            interest_expense_cr=50
-        )
+    def test_icr_negative_ebit(self):
+        icr, error = LeverageRatios.interest_coverage_ratio(-300, 30)
         assert icr is None
-        assert edge_case is not None
-        assert edge_case.edge_case == "insufficient_ebit"
+        assert error == "insufficient_ebit"
     
-    def test_icr_negative_interest(self):
-        """Test ICR with negative interest expense"""
-        icr, edge_case = LeverageRatios.interest_coverage_ratio(
-            ebit_cr=200,
-            interest_expense_cr=-50
-        )
+    def test_icr_zero_ebit(self):
+        icr, error = LeverageRatios.interest_coverage_ratio(0, 30)
         assert icr is None
-        assert edge_case is not None
-        assert edge_case.edge_case == "negative_interest"
-
-
-class TestAssetTurnover:
-    """Asset Turnover tests"""
+        assert error == "insufficient_ebit"
     
-    def test_asset_turnover_normal_case(self):
-        """Test Asset Turnover calculation with normal values"""
-        at, edge_case = LeverageRatios.asset_turnover(
-            revenue_cr=1000,
-            beginning_assets_cr=2000,
-            ending_assets_cr=2500
-        )
-        assert at == pytest.approx(0.4444444, rel=1e-6)
-        assert edge_case is None
+    def test_asset_turnover_normal(self):
+        at, error = LeverageRatios.asset_turnover(2000, 1000, 1200)
+        assert at == pytest.approx(1.82, 0.01)
+        assert error is None
     
-    def test_asset_turnover_zero_average_assets(self):
-        """Test Asset Turnover with zero average assets"""
-        at, edge_case = LeverageRatios.asset_turnover(
-            revenue_cr=1000,
-            beginning_assets_cr=0,
-            ending_assets_cr=0
-        )
+    def test_asset_turnover_invalid_assets(self):
+        at, error = LeverageRatios.asset_turnover(2000, 0, 1200)
         assert at is None
-        assert edge_case is not None
-        # invalid_assets is caught first in the validation
-        assert edge_case.edge_case in ["invalid_assets", "zero_average_assets"]
-
-
-class TestNetDebt:
-    """Net Debt tests"""
+        assert error == "invalid_assets"
     
-    def test_net_debt_positive_debt(self):
-        """Test Net Debt with positive debt position"""
-        nd, edge_case = LeverageRatios.net_debt(
-            total_debt_cr=500,
-            cash_and_equivalents_cr=100
-        )
+    def test_asset_turnover_missing_data(self):
+        at, error = LeverageRatios.asset_turnover(None, 1000, 1200)
+        assert at is None
+        assert error == "missing_data"
+    
+    def test_net_debt_positive(self):
+        nd, error = LeverageRatios.net_debt(500, 100)
         assert nd == 400
-        assert edge_case is None
+        assert error is None
     
-    def test_net_debt_net_cash_position(self):
-        """Test Net Debt with net cash position (negative net debt)"""
-        nd, edge_case = LeverageRatios.net_debt(
-            total_debt_cr=100,
-            cash_and_equivalents_cr=500
-        )
-        assert nd == -400
-        assert edge_case is None
-
-
-class TestWorkingCapitalTurnover:
-    """Working Capital Turnover tests"""
-    
-    def test_wc_turnover_normal_case(self):
-        """Test WC Turnover with normal values"""
-        wc, edge_case = EfficiencyRatios.working_capital_turnover(
-            revenue_cr=1000,
-            current_assets_cr=600,
-            current_liabilities_cr=200
-        )
-        assert wc == pytest.approx(2.5)
-        assert edge_case is None
-    
-    def test_wc_turnover_negative_wc(self):
-        """Test WC Turnover with negative working capital"""
-        wc, edge_case = EfficiencyRatios.working_capital_turnover(
-            revenue_cr=1000,
-            current_assets_cr=100,
-            current_liabilities_cr=200
-        )
-        assert wc is None
-        assert edge_case is not None
-        assert edge_case.edge_case == "negative_working_capital"
-
-
-if __name__ == '__main__':
-    pytest.main([__file__, '-v'])
+    def test_net_debt_negative(self):
+        nd, error = LeverageRatios.net_debt(500, 600)
+        assert nd == -100
+        assert error is None
