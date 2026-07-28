@@ -1,0 +1,293 @@
+BLUESTOCK MUTUAL FUNDS ANALYTICS - PRESENTATION OUTLINE
+=======================================================
+
+Use this outline to create your PowerPoint presentation (Presentation.pptx)
+
+---
+
+SLIDE 1: TITLE SLIDE
+Title: Bluestock Mutual Funds Analytics Capstone
+Subtitle: Comprehensive Data Analysis & Risk Metrics Platform
+Your Name
+Date: July 2026
+
+---
+
+SLIDE 2: PROJECT OVERVIEW
+Title: Project Scope
+Content:
+- 40 mutual fund schemes analyzed
+- 32,778 investor transactions
+- 3+ years of historical data (2022-2026)
+- 10 datasets from AMFI
+- SQLite database with 22 tables
+
+---
+
+SLIDE 3: DELIVERABLES AT A GLANCE
+Title: What We Built
+Content:
+- ETL Pipeline (data ingestion + live NAV fetching)
+- SQLite Database (normalized star schema)
+- 15 EDA Visualizations
+- Performance Analytics (Sharpe, Alpha, Beta, VaR)
+- Interactive Power BI Dashboard (4 pages)
+- Advanced Analytics (risk metrics + recommender)
+
+---
+
+SLIDE 4: DATA PIPELINE ARCHITECTURE
+Title: ETL Pipeline
+Content:
+- Raw Data: 10 CSV files from AMFI
+- Processing: Data cleaning, validation, transformation
+- Storage: SQLite database (22 tables)
+- Output: Cleaned CSVs + database
+- Flow diagram showing data sources → processing → database
+
+---
+
+SLIDE 5: DATABASE SCHEMA
+Title: Star Schema Design
+Content:
+- Central: dim_fund (scheme master)
+- Facts: NAV history, AUM, SIP inflows, transactions, portfolio holdings, etc.
+- Benefits: Optimized for analytical queries
+- 87,533 total records
+- Normalized design (no data redundancy)
+
+---
+
+SLIDE 6: EDA - MARKET OVERVIEW
+Title: Industry Trends 2022-2026
+Content:
+- AUM growth chart (peak in 2024)
+- Top fund houses: SBI (Rs 12.5L Cr), ICICI, HDFC
+- SIP inflows peak: Rs 31,002 Cr (Dec 2025)
+- Folio growth: 13.26 Cr → 26.12 Cr
+- Show 2023 bull run and 2024 corrections
+
+---
+
+SLIDE 7: EDA - INVESTOR DEMOGRAPHICS
+Title: Who Are the Investors?
+Content:
+- Geographic: T30 cities (65.9%), B30 (34.1%)
+- Age group distribution: 25-45 dominates
+- Gender split (if available)
+- Income distribution
+- Payment mode preference (SIP > Lumpsum)
+
+---
+
+SLIDE 8: PERFORMANCE ANALYTICS - RETURNS
+Title: Fund Performance Ranking
+Content:
+- Top 3 by 3-year CAGR:
+  1. Axis Midcap (35.10%)
+  2. Mirae Asset Large Cap (33.99%)
+  3. ICICI Pru Bluechip (32.48%)
+- Bottom 3 performers
+- CAGR comparison table
+
+---
+
+SLIDE 9: RISK-ADJUSTED METRICS
+Title: Sharpe Ratio & Risk Analysis
+Content:
+- Top Sharpe Ratio funds:
+  1. Mirae Asset Large Cap (1.448)
+  2. Kotak Flexicap (1.307)
+  3. Mirae Tax Saver (1.235)
+- Risk vs Return scatter plot
+- Volatility comparison
+
+---
+
+SLIDE 10: ADVANCED RISK METRICS
+Title: VaR & CVaR Analysis
+Content:
+- Value at Risk (95% confidence)
+- Conditional VaR (tail risk)
+- Highest risk funds identified
+- Use case: Risk management
+- Show var_cvar_report findings
+
+---
+
+SLIDE 11: DASHBOARD - INDUSTRY OVERVIEW
+Title: Interactive Dashboard Page 1
+Content:
+- Screenshot of Industry Overview page
+- KPI cards: Total AUM, SIP Inflows, Folios, Schemes
+- AUM trend line chart
+- AUM by fund house bar chart
+- Interactive slicers
+
+---
+
+SLIDE 12: DASHBOARD - FUND PERFORMANCE
+Title: Interactive Dashboard Page 2
+Content:
+- Screenshot of Fund Performance page
+- Risk-return scatter plot
+- Fund scorecard table
+- NAV vs Benchmark chart
+- Category, Fund House slicers
+
+---
+
+SLIDE 13: DASHBOARD - INVESTOR ANALYTICS
+Title: Interactive Dashboard Page 3
+Content:
+- Screenshot of Investor Analytics
+- Geographic distribution
+- Demographic breakdowns
+- Transaction patterns
+- State, age group, city tier slicers
+
+---
+
+SLIDE 14: DASHBOARD - SIP TRENDS
+Title: Interactive Dashboard Page 4
+Content:
+- Screenshot of SIP & Market Trends
+- Dual-axis: SIP inflows vs Nifty 50
+- Category inflows heatmap
+- Top categories by net inflow
+- Interactive filters
+
+---
+
+SLIDE 15: INVESTOR COHORT ANALYSIS
+Title: Investor Behavior by Cohort
+Content:
+- Cohort definition: By first transaction year
+- 2024 cohort: Highest investment (Rs 391.76L Cr)
+- 2025 cohort: Growing but lower volumes
+- Top fund preferences per cohort
+- Average SIP amounts
+
+---
+
+SLIDE 16: SIP CONTINUITY ANALYSIS
+Title: Investor At-Risk Detection
+Content:
+- Total SIP investors (6+ transactions): 2,950
+- At-risk investors (gap > 35 days): 2,949 (0.03%)
+- Continuity rate: 99.97%
+- Insight: Extremely loyal investor base
+- Gap analysis over time
+
+---
+
+SLIDE 17: FUND RECOMMENDER
+Title: AI-Powered Fund Selection
+Content:
+- Risk-based recommendations:
+  * Low: Liquid, Gilt funds
+  * Moderate: Balanced, Conservative
+  * High: Equity, Midcap, Smallcap
+- Top 3 by Sharpe ratio per category
+- Recommendation logic explained
+
+---
+
+SLIDE 18: PORTFOLIO CONCENTRATION
+Title: Sector HHI Analysis
+Content:
+- Herfindahl-Hirschman Index explanation
+- Most concentrated: Axis Bluechip (HHI 0.206)
+- Concentration levels: High (>0.15), Moderate (>0.08), Low (<0.08)
+- 34 equity funds analyzed
+- Concentration vs performance
+
+---
+
+SLIDE 19: KEY FINDINGS
+Title: Major Insights
+Content:
+- SIP reliability: 99.97% continuity rate
+- Market growth: 2023 bull run, 2024 resilience
+- Top performers: Mirae, Axis, Kotak funds
+- Risk metrics: VaR helps identify tail risks
+- Investor trust: Strong geographic and demographic spread
+
+---
+
+SLIDE 20: RECOMMENDATIONS
+Title: Actionable Insights
+For Investors:
+- Diversify across categories
+- Use Sharpe ratio for selection
+- SIPs are reliable (low churn)
+- Consider risk appetite
+
+For Fund Houses:
+- SIP market is strong
+- Expand to B30 cities
+- Focus on fee competitiveness
+
+---
+
+SLIDE 21: TECHNICAL HIGHLIGHTS
+Title: Technology & Tools
+Content:
+- Python (pandas, numpy, scipy, matplotlib)
+- SQLite database
+- Power BI visualization
+- Git version control
+- ETL automation
+
+---
+
+SLIDE 22: LIMITATIONS & FUTURE WORK
+Title: What's Next?
+Content:
+- Markowitz Efficient Frontier optimization
+- Monte Carlo NAV projections
+- Machine learning for recommendations
+- Sentiment analysis on schemes
+- Mobile app integration
+
+---
+
+SLIDE 23: PROJECT STATISTICS
+Title: By The Numbers
+Content:
+- 40 schemes analyzed
+- 32,778 transactions
+- 87,533 database records
+- 15 EDA charts
+- 4 dashboard pages
+- 6 advanced analytics modules
+
+---
+
+SLIDE 24: CONCLUSION
+Title: Summary & Impact
+Content:
+- Comprehensive analytics platform built
+- Real financial data processed
+- Interactive dashboards for decisions
+- Risk metrics for investors
+- Scalable for future expansion
+
+---
+
+SLIDE 25: Q&A
+Title: Questions?
+Content:
+- GitHub repo: https://github.com/MohamedYunus-lab/bluestock-mf-capstone-lab
+- Contact information
+- Thank you
+
+---
+
+NOTES FOR PRESENTATION CREATION:
+- Use Bluestock branding colors: #003366 (Dark Blue), #0066CC (Blue), #FF9900 (Orange)
+- Include screenshots from Power BI dashboard
+- Use charts and visualizations from reports/charts/ and reports/advanced/
+- Keep slides concise (one idea per slide)
+- Include speaker notes for each slide
+- Total: 25 slides (approximately 20 minutes presentation)
