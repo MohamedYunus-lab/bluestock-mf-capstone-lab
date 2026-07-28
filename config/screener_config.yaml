@@ -1,0 +1,81 @@
+# N100 Screener Configuration - Analyst Editable Thresholds
+
+filters:
+  # Core metrics with defaults
+  roe_min: 15.0                    # Return on Equity minimum %
+  de_max: 2.0                      # Debt-to-Equity maximum
+  fcf_min: 0                        # Free Cash Flow minimum Cr
+  revenue_cagr_min: 10.0            # Revenue CAGR minimum %
+  pat_cagr_min: 20.0                # PAT CAGR minimum %
+  opm_min: 10.0                     # Operating Profit Margin minimum %
+  pe_max: 20.0                      # Price-to-Earnings maximum
+  pb_max: 3.0                       # Price-to-Book maximum
+  dividend_yield_min: 1.0           # Dividend Yield minimum %
+  icr_min: 2.0                      # Interest Coverage Ratio minimum
+  market_cap_min: 100.0             # Market Cap minimum Cr
+  net_profit_min: 100.0             # Net Profit minimum Cr
+  eps_cagr_min: 15.0                # EPS CAGR minimum %
+  asset_turnover_min: 0.5           # Asset Turnover minimum
+  sales_min: 1000.0                 # Revenue minimum Cr
+
+# Composite score weighting (must sum to 100)
+composite_score_weights:
+  profitability: 35                 # ROE 15% + ROCE 10% + NPM 10%
+  cash_quality: 30                  # FCF CAGR 15% + CFO/PAT 10% + FCF flag 5%
+  growth: 20                        # Revenue CAGR 10% + PAT CAGR 10%
+  leverage: 15                      # D/E score 10% + ICR score 5%
+
+# Sector exclusions
+sector_exclusions:
+  debt_filter: "Financials"         # Exclude Financials from D/E filter logic
+
+# Preset thresholds
+presets:
+  quality_compounder:
+    roe_min: 15.0
+    de_max: 1.0
+    fcf_min: 0
+    revenue_cagr_min: 10.0
+    target_count: "5-50"
+
+  value_pick:
+    pe_max: 20.0
+    pb_max: 3.0
+    de_max: 2.0
+    dividend_yield_min: 1.0
+    target_count: "5-50"
+
+  growth_accelerator:
+    pat_cagr_min: 20.0
+    revenue_cagr_min: 15.0
+    de_max: 2.0
+    target_count: "5-50"
+
+  dividend_champion:
+    dividend_yield_min: 2.0
+    payout_max: 80.0
+    fcf_min: 0
+    target_count: "5-50"
+
+  debt_free_bluechip:
+    de_max: 0
+    roe_min: 12.0
+    revenue_min: 5000.0
+    target_count: "5-50"
+
+  turnaround_watch:
+    revenue_cagr_min: 10.0
+    fcf_min: 0
+    de_declining: true
+    target_count: "5-50"
+
+# Winsorization (edge case clipping)
+winsorization:
+  percentile_low: 10
+  percentile_high: 90
+
+# Data quality rules
+data_quality:
+  min_years_coverage: 3             # Require at least 3 years of data
+  required_latest_year: 2024        # Latest year must be available
+  allow_null_for_optional: true     # Allow NULL for non-core metrics

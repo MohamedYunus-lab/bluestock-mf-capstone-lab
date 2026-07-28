@@ -92,37 +92,14 @@ class RatioCalculator:
         """Get company sector for special handling (e.g., Financials)"""
         cursor = self.connection.cursor()
         cursor.execute("""
-            SELECT c.company_id, s.broad_sector 
+            SELECT s.sector_name 
             FROM companies c
-            LEFT JOIN (
-                SELECT DISTINCT company_id, broad_sector 
-                FROM (
-                    SELECT company_id, broad_sector FROM (
-                        SELECT company_id, broad_sector FROM sectors s
-                        CROSS JOIN companies c
-                        LIMIT 1
-                    )
-                    UNION
-                    SELECT c.id as company_id, s.broad_sector
-                    FROM (
-                        SELECT 'sector_map' as placeholder
-                    ) dummy
-                )
-            ) s ON c.company_id = s.company_id
+            LEFT JOIN sectors s ON c.sector_id = s.sector_id
             WHERE c.company_id = ?
         """, (company_id,))
         result = cursor.fetchone()
-        
-        # Fallback: check sectors table directly
-        try:
-            import pandas as pd
-            sectors_df = pd.read_excel('data/raw/sectors.xlsx', header=0)
-            match = sectors_df[sectors_df['company_id'] == company_id]
-            if not match.empty:
-                return match.iloc[0]['broad_sector']
-        except:
-            pass
-        
+        if result and result[0]:
+            return result[0]
         return None
     
     def calculate_all_ratios(self, company_id: str, year: int) -> Dict:
@@ -350,10 +327,10 @@ class FinancialRatiosPopulator:
                     """, update_values)
                     updated += 1
                 else:
-                    # Insert
+                    # Insert - do NOT include ratio_id since it's AUTOINCREMENT
+                    columns = ', '.join([k for k in ratio_data.keys()])
                     placeholders = ', '.join(['?' for _ in ratio_data])
-                    columns = ', '.join(ratio_data.keys())
-                    values = list(ratio_data.values())
+                    values = [v for v in ratio_data.values()]
                     
                     cursor.execute(f"""
                         INSERT INTO financial_ratios ({columns})
